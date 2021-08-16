@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.Calendar;
+import java.util.Random;
 import java.util.Set;
 
 public abstract class AbstractPage {
@@ -211,5 +213,34 @@ public abstract class AbstractPage {
     public void waitForElementInvisible(WebElement element) {
         WebDriverWait explicitWait = new WebDriverWait(driver, Constant.TIME_OUT_MEDIUM_ELEMENT);
         explicitWait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
+    // Random using Java
+
+    // Random from 100 to 999
+    public static int getRandomNumber(){
+        int max = 999;
+        int min = 100;
+        Random random = new Random();
+        return min + random.nextInt(max - min);
+    }
+
+    // Random from min to max
+
+    public static int getRandomNumber(int max, int min){
+        Random random = new Random();
+        return min + random.nextInt(max - min);
+    }
+
+    // Get random number by date time
+
+    public static long getRandomNumberByDateTime(){
+        return Calendar.getInstance().getTimeInMillis() %100000;
+    }
+
+    // Get random mail
+
+    public static String getRandomMail(){
+        return "automation" + getRandomNumberByDateTime() + "@gmail.com";
     }
 }
