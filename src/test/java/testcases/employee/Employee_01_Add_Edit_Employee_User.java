@@ -1,6 +1,7 @@
 package testcases.employee;
 
 import commons.AbstractTest;
+import commons.DataFaker;
 import driverFacTory.DriverFactory;
 import driverFacTory.DriverManager;
 import org.openqa.selenium.WebDriver;
@@ -20,7 +21,8 @@ public class Employee_01_Add_Edit_Employee_User extends AbstractTest {
     LoginPage loginPage;
     EmployeeListPage employeeListPage;
 
-    String firstName,lastName,employeeId;
+    String firstName, lastName, employeeId;
+    DataFaker data;
 
 
     @Parameters({"browser", "url"})
@@ -28,10 +30,13 @@ public class Employee_01_Add_Edit_Employee_User extends AbstractTest {
     public void beforeClass(String browserName, String urlValue) {
         driverManager = DriverFactory.getBrowserDriver(browserName);
         driver = driverManager.getDriver();
+        driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         driver.get(urlValue);
+        data = DataFaker.getData();
 
-        firstName = "";
+        firstName = data.getFirstName();
+        lastName = data.getLastName();
 
         log.info("Pre-condition : Step 01 :  Input to Username and PassWord Text box ");
         LoginPage loginPage = new LoginPage(driver);
@@ -43,7 +48,7 @@ public class Employee_01_Add_Edit_Employee_User extends AbstractTest {
 
 
     @Test
-    public void Employee_01_Add_Employee(){
+    public void Employee_01_Add_Employee() {
         dashBoardPage = new DashBoardPage(driver);
         dashBoardPage.openPimTab();
 
@@ -51,8 +56,15 @@ public class Employee_01_Add_Edit_Employee_User extends AbstractTest {
         employeeListPage.clickToAddButton();
 
         employeeDetailPage = new EmployeeDetailPage(driver);
-        employeeDetailPage.inputFirstNameTextBox("").inputMiddleNameTextBox("").inputLastNameNameTextBox("");
+        employeeDetailPage.inputFirstNameTextBox(firstName).inputLastNameNameTextBox(lastName);
+        employeeDetailPage.inputMiddleNameTextBox("middleName");
+        employeeId = employeeDetailPage.getEmployeeIDAtPersonalForm();
         employeeDetailPage.clickSaveButton();
+
+        String employeeFullNameAtHeader = employeeDetailPage.getTextEmployeeFullNameAtHeader();
+        String employeeIDAtPersonalDetail = employeeDetailPage.getEmployeeIDAtPersonalDetail();
+        employeeDetailPage.verifyEqual(employeeFullNameAtHeader,firstName+""+lastName);
+        employeeDetailPage.verifyEqual(employeeId,employeeIDAtPersonalDetail);
     }
 
     @AfterClass

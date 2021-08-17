@@ -7,6 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -145,10 +146,23 @@ public abstract class AbstractPage {
         element.click();
     }
 
-    public void sendKeyToElement(WebElement element,String key) {
+    public void sendKeyToElement(WebElement element, String key) {
         waitForElementVisible(element);
         element.clear();
         element.sendKeys(key);
+    }
+
+    public String getTextElement(WebElement element) {
+        waitForElementVisible(element);
+        return element.getText();
+    }
+
+    public void verifyTrue(boolean isTrue) {
+        Assert.assertTrue(isTrue);
+    }
+
+    public void verifyEqual(String s1, String s2) {
+        Assert.assertEquals(s1, s2);
     }
 
     public void selectItemInDropDown(WebElement element, String itemValue) {
@@ -174,7 +188,7 @@ public abstract class AbstractPage {
         }
     }
 
-    public boolean isElementDisplayed(WebElement element) {
+    private boolean isElementDisplayed(WebElement element) {
         try {
             return element.isDisplayed();
 
@@ -183,7 +197,7 @@ public abstract class AbstractPage {
         }
     }
 
-    public boolean isElementDisplayed(WebElement element, int timeOutInSecond) {
+    private boolean isElementDisplayed(WebElement element, int timeOutInSecond) {
         boolean isVisible = false;
         try {
             WebDriverWait explicitWait = new WebDriverWait(driver, timeOutInSecond);
@@ -196,7 +210,7 @@ public abstract class AbstractPage {
         return isVisible;
     }
 
-    public boolean isForElementPresent(WebElement element) {
+    private boolean isForElementPresent(WebElement element) {
         return isElementDisplayed(element, Constant.TIME_OUT_MEDIUM_ELEMENT);
     }
 
@@ -205,8 +219,8 @@ public abstract class AbstractPage {
         explicitWait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public void waitForElementVisible(WebElement element){
-        WebDriverWait explicitWait = new WebDriverWait(driver,Constant.TIME_OUT_NORMAL_ELEMENT);
+    public void waitForElementVisible(WebElement element) {
+        WebDriverWait explicitWait = new WebDriverWait(driver, Constant.TIME_OUT_NORMAL_ELEMENT);
         explicitWait.until(ExpectedConditions.visibilityOf(element));
     }
 
@@ -218,7 +232,7 @@ public abstract class AbstractPage {
     // Random using Java
 
     // Random from 100 to 999
-    public static int getRandomNumber(){
+    public static int getRandomNumber() {
         int max = 999;
         int min = 100;
         Random random = new Random();
@@ -227,20 +241,20 @@ public abstract class AbstractPage {
 
     // Random from min to max
 
-    public static int getRandomNumber(int max, int min){
+    public static int getRandomNumber(int max, int min) {
         Random random = new Random();
         return min + random.nextInt(max - min);
     }
 
     // Get random number by date time
 
-    public static long getRandomNumberByDateTime(){
-        return Calendar.getInstance().getTimeInMillis() %100000;
+    public static long getRandomNumberByDateTime() {
+        return Calendar.getInstance().getTimeInMillis() % 100000;
     }
 
     // Get random mail
 
-    public static String getRandomMail(){
+    public static String getRandomMail() {
         return "automation" + getRandomNumberByDateTime() + "@gmail.com";
     }
 }
