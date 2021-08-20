@@ -50,21 +50,20 @@ public class Employee_01_Add_Edit_Employee_User extends AbstractTest {
     @Test
     public void Employee_01_Add_Employee() {
         dashBoardPage = new DashBoardPage(driver);
-        dashBoardPage.openPimTab();
+        dashBoardPage.openPimTab().clickEmployeeList();
 
         employeeListPage = new EmployeeListPage(driver);
         employeeListPage.clickToAddButton();
 
         employeeDetailPage = new EmployeeDetailPage(driver);
         employeeDetailPage.inputFirstNameTextBox(firstName).inputLastNameNameTextBox(lastName);
-        employeeDetailPage.inputMiddleNameTextBox("middleName");
         employeeId = employeeDetailPage.getEmployeeIDAtPersonalForm();
         employeeDetailPage.clickSaveButton();
 
         String employeeFullNameAtHeader = employeeDetailPage.getTextEmployeeFullNameAtHeader();
         String employeeIDAtPersonalDetail = employeeDetailPage.getEmployeeIDAtPersonalDetail();
-        employeeDetailPage.verifyEqual(employeeFullNameAtHeader,firstName+""+lastName);
-        employeeDetailPage.verifyEqual(employeeId,employeeIDAtPersonalDetail);
+        verifyEquals(employeeFullNameAtHeader,firstName+" "+lastName);
+        verifyEquals(employeeId,employeeIDAtPersonalDetail);
     }
 
     @AfterClass

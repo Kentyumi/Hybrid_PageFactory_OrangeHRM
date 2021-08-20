@@ -2,6 +2,7 @@ package commons;
 
 
 import com.oracle.tools.packager.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,6 +21,7 @@ public abstract class AbstractPage {
     private Alert alert;
     private Select select;
     private final WebDriver driver;
+
 
     public AbstractPage(WebDriver driver) {
         this.driver = driver;
@@ -157,13 +159,6 @@ public abstract class AbstractPage {
         return element.getText();
     }
 
-    public void verifyTrue(boolean isTrue) {
-        Assert.assertTrue(isTrue);
-    }
-
-    public void verifyEqual(String s1, String s2) {
-        Assert.assertEquals(s1, s2);
-    }
 
     public void selectItemInDropDown(WebElement element, String itemValue) {
         select = new Select(element);
